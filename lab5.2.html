@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма з валідацією</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .error {
+            color: red;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Форма з валідацією</h1>
+    <form id="myForm">
+        <label for="integer">Ціле число (*):</label><br>
+        <input type="text" id="integer" name="integer"><br>
+        <span class="error" id="integerError"></span><br>
+
+        <label for="float">Дійсне число (*):</label><br>
+        <input type="text" id="float" name="float"><br>
+        <span class="error" id="floatError"></span><br>
+
+        <label for="date">Дата (DD.MM.YYYY) (*):</label><br>
+        <input type="text" id="date" name="date"><br>
+        <span class="error" id="dateError"></span><br>
+
+        <label for="password">Пароль (*):</label><br>
+        <input type="password" id="password" name="password"><br>
+        <span class="error" id="passwordError"></span><br>
+
+        <label for="confirmPassword">Повторіть пароль (*):</label><br>
+        <input type="password" id="confirmPassword" name="confirmPassword"><br>
+        <span class="error" id="confirmPasswordError"></span><br>
+
+        <button type="submit">Відправити</button>
+    </form>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let isValid = true;
+
+            // Очищаємо попередні помилки
+            document.querySelectorAll('.error').forEach(error => error.textContent = '');
+
+            // Перевірка цілого числа
+            let integer = document.getElementById('integer').value;
+            if (!integer) {
+                document.getElementById('integerError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            } else if (!/^-?\d+$/.test(integer)) {
+                document.getElementById('integerError').textContent = 'Введіть ціле число.';
+                isValid = false;
+            }
+
+            // Перевірка дійсного числа
+            let float = document.getElementById('float').value;
+            if (!float) {
+                document.getElementById('floatError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            } else if (!/^-?\d+(\.\d+)?$/.test(float)) {
+                document.getElementById('floatError').textContent = 'Введіть дійсне число.';
+                isValid = false;
+            }
+
+            // Перевірка дати
+            let date = document.getElementById('date').value;
+            if (!date) {
+                document.getElementById('dateError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            } else if (!/^\d{2}\.\d{2}\.\d{4}$/.test(date)) {
+                document.getElementById('dateError').textContent = 'Введіть дату у форматі DD.MM.YYYY.';
+                isValid = false;
+            }
+
+            // Перевірка пароля
+            let password = document.getElementById('password').value;
+            let confirmPassword = document.getElementById('confirmPassword').value;
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            }
+            if (!confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Паролі не співпадають.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Форма успішно відправлена!');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Звіт про обчислення та сортування масиву</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: auto;
+        }
+        code {
+            white-space: pre-wrap;
+        }
+        .error {
+            color: red;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lab5. Borovyk Olha. IO-12</h1>
+    
+    <h2>JavaScript код для обчислення та сортування масиву</h2>
+    <pre>
+    <code>
+    // JavaScript код для обчислення та сортування масиву
+    let n = parseInt(prompt("Введіть кількість елементів масиву:"));
+    let arr = [];
+    for (let i = 0; i < n; i++) {
+        arr.push(parseInt(prompt(`Введіть ${i+1}-й елемент:`)));
+    }
+
+    // Функція для знаходження максимального серед парних елементів
+    function findMaxEven(arr) {
+        let maxEven = -Infinity;
+        for (let num of arr) {
+            if (num % 2 === 0 && num > maxEven) {
+                maxEven = num;
+            }
+        }
+        return maxEven;
+    }
+
+    // Функція для знаходження мінімального серед елементів з парними індексами
+    function findMinEvenAtIndex(arr) {
+        let minEvenIndex = -1;
+        let minEvenValue = Infinity;
+        for (let i = 0; i < arr.length; i++) {
+            if (i % 2 === 0 && arr[i] < minEvenValue) {
+                minEvenIndex = i;
+                minEvenValue = arr[i];
+            }
+        }
+        return { index: minEvenIndex, value: minEvenValue };
+    }
+
+    // Знаходимо максимальний серед парних елементів
+    let maxEven = findMaxEven(arr);
+
+    // Знаходимо мінімальний серед елементів з парними індексами
+    let { index: minEvenIndex, value: minEvenValue } = findMinEvenAtIndex(arr);
+
+    // Міняємо місцями максимальний та мінімальний елементи
+    if (minEvenIndex !== -1) {
+        let temp = arr[minEvenIndex];
+        arr[minEvenIndex] = maxEven;
+        arr[arr.indexOf(maxEven)] = temp;
+    }
+
+    // Сортуємо масив методом вставки
+    for (let i = 1; i < arr.length; i++) {
+        let current = arr[i];
+        let j = i - 1;
+        while (j >= 0 && arr[j] > current) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = current;
+    }
+
+    // Виводимо результати в HTML
+    let resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML += "<h2>Вхідний масив:</h2>";
+    resultsDiv.innerHTML += `<p>${arr.join(", ")}</p>`;
+    resultsDiv.innerHTML += `<h2>Максимальний серед парних елементів: ${maxEven}</h2>`;
+    resultsDiv.innerHTML += `<h2>Мінімальний серед елементів з парними індексами: ${minEvenValue}</h2>`;
+    resultsDiv.innerHTML += "<h2>Відредагований масив:</h2>";
+    resultsDiv.innerHTML += `<p>${arr.join(", ")}</p>`;
+    </code>
+    </pre>
+
+    <h2>Результати виконання</h2>
+    <div id="results"></div>
+    <img src="img/image.png" alt="results">
+
+    <h2>Форма з валідацією</h2>
+    <h3>Коректна валідація</h3>
+    <img src="img/5.2.1.png" alt="correct">
+    <h3>Помилкові вхідні дані</h3>
+    <img src="img/5.2.2.png" alt="uncorrect">
+
+    <h2>HTML код для форми з валідацією</h2>
+    <pre><code>
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang="en"&gt;
+    &lt;head&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+        &lt;title&gt;Форма з валідацією&lt;/title&gt;
+        &lt;style&gt;
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 20px;
+            }
+            .error {
+                color: red;
+            }
+            form {
+                max-width: 600px;
+                margin: auto;
+            }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Форма з валідацією&lt;/h1&gt;
+        &lt;form id="myForm"&gt;
+            &lt;label for="integer"&gt;Ціле число (*):&lt;/label&gt;&lt;br&gt;
+            &lt;input type="text" id="integer" name="integer"&gt;&lt;br&gt;
+            &lt;span class="error" id="integerError"&gt;&lt;/span&gt;&lt;br&gt;
+    
+            &lt;label for="float"&gt;Дійсне число (*):&lt;/label&gt;&lt;br&gt;
+            &lt;input type="text" id="float" name="float"&gt;&lt;br&gt;
+            &lt;span class="error" id="floatError"&gt;&lt;/span&gt;&lt;br&gt;
+    
+            &lt;label for="date"&gt;Дата (DD.MM.YYYY) (*):&lt;/label&gt;&lt;br&gt;
+            &lt;input type="text" id="date" name="date"&gt;&lt;br&gt;
+            &lt;span class="error" id="dateError"&gt;&lt;/span&gt;&lt;br&gt;
+    
+            &lt;label for="password"&gt;Пароль (*):&lt;/label&gt;&lt;br&gt;
+            &lt;input type="password" id="password" name="password"&gt;&lt;br&gt;
+            &lt;span class="error" id="passwordError"&gt;&lt;/span&gt;&lt;br&gt;
+    
+            &lt;label for="confirmPassword"&gt;Повторіть пароль (*):&lt;/label&gt;&lt;br&gt;
+            &lt;input type="password" id="confirmPassword" name="confirmPassword"&gt;&lt;br&gt;
+            &lt;span class="error" id="confirmPasswordError"&gt;&lt;/span&gt;&lt;br&gt;
+    
+            &lt;button type="submit"&gt;Відправити&lt;/button&gt;
+        &lt;/form&gt;
+    
+        &lt;script&gt;
+            document.getElementById('myForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                let isValid = true;
+    
+                // Очищаємо попередні помилки
+                document.querySelectorAll('.error').forEach(error => error.textContent = '');
+    
+                // Перевірка цілого числа
+                let integer = document.getElementById('integer').value;
+                if (!integer) {
+                    document.getElementById('integerError').textContent = 'Це поле обов\'язкове.';
+                    isValid = false;
+                } else if (!/^-?\d+$/.test(integer)) {
+                    document.getElementById('integerError').textContent = 'Введіть ціле число.';
+                    isValid = false;
+                }
+    
+                // Перевірка дійсного числа
+                let float = document.getElementById('float').value;
+                if (!float) {
+                    document.getElementById('floatError').textContent = 'Це поле обов\'язкове.';
+                    isValid = false;
+                } else if (!/^-?\d+(\.\d+)?$/.test(float)) {
+                    document.getElementById('floatError').textContent = 'Введіть дійсне число.';
+                    isValid = false;
+                }
+    
+                // Перевірка дати
+                let date = document.getElementById('date').value;
+                if (!date) {
+                    document.getElementById('dateError').textContent = 'Це поле обов\'язкове.';
+                    isValid = false;
+                } else if (!/^\d{2}\.\d{2}\.\d{4}$/.test(date)) {
+                    document.getElementById('dateError').textContent = 'Введіть дату у форматі DD.MM.YYYY.';
+                    isValid = false;
+                }
+    
+                // Перевірка пароля
+                let password = document.getElementById('password').value;
+                let confirmPassword = document.getElementById('confirmPassword').value;
+                if (!password) {
+                    document.getElementById('passwordError').textContent = 'Це поле обов\'язкове.';
+                    isValid = false;
+                }
+                if (!confirmPassword) {
+                    document.getElementById('confirmPasswordError').textContent = 'Це поле обов\'язкове.';
+                    isValid = false;
+                }
+                if (password && confirmPassword && password !== confirmPassword) {
+                    document.getElementById('confirmPasswordError').textContent = 'Паролі не співпадають.';
+                    isValid = false;
+                }
+    
+                if (isValid) {
+                    alert('Форма успішно відправлена!');
+                }
+            });
+        &lt;/script&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+    </code></pre>
+
+    <h2>Реальна форма з валідацією</h2>
+    <form id="myForm">
+        <label for="integer">Ціле число (*):</label><br>
+        <input type="text" id="integer" name="integer"><br>
+        <span class="error" id="integerError"></span><br>
+
+        <label for="float">Дійсне число (*):</label><br>
+        <input type="text" id="float" name="float"><br>
+        <span class="error" id="floatError"></span><br>
+
+        <label for="date">Дата (DD.MM.YYYY) (*):</label><br>
+        <input type="text" id="date" name="date"><br>
+        <span class="error" id="dateError"></span><br>
+
+        <label for="password">Пароль (*):</label><br>
+        <input type="password" id="password" name="password"><br>
+        <span class="error" id="passwordError"></span><br>
+
+        <label for="confirmPassword">Повторіть пароль (*):</label><br>
+        <input type="password" id="confirmPassword" name="confirmPassword"><br>
+        <span class="error" id="confirmPasswordError"></span><br>
+
+        <button type="submit">Відправити</button>
+    </form>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let isValid = true;
+
+            // Очищаємо попередні помилки
+            document.querySelectorAll('.error').forEach(error => error.textContent = '');
+
+            // Перевірка цілого числа
+            let integer = document.getElementById('integer').value;
+            if (!integer) {
+                document.getElementById('integerError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            } else if (!/^-?\d+$/.test(integer)) {
+                document.getElementById('integerError').textContent = 'Введіть ціле число.';
+                isValid = false;
+            }
+
+            // Перевірка дійсного числа
+            let float = document.getElementById('float').value;
+            if (!float) {
+                document.getElementById('floatError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            } else if (!/^-?\d+(\.\d+)?$/.test(float)) {
+                document.getElementById('floatError').textContent = 'Введіть дійсне число.';
+                isValid = false;
+            }
+
+            // Перевірка дати
+            let date = document.getElementById('date').value;
+            if (!date) {
+                document.getElementById('dateError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            } else if (!/^\d{2}\.\d{2}\.\d{4}$/.test(date)) {
+                document.getElementById('dateError').textContent = 'Введіть дату у форматі DD.MM.YYYY.';
+                isValid = false;
+            }
+
+            // Перевірка пароля
+            let password = document.getElementById('password').value;
+            let confirmPassword = document.getElementById('confirmPassword').value;
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            }
+            if (!confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Це поле обов\'язкове.';
+                isValid = false;
+            }
+            if (password && confirmPassword && password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Паролі не співпадають.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Форма успішно відправлена!');
+            }
+        });
+    </script>
+</body>
+</html>
